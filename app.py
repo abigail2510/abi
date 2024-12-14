@@ -1,7 +1,6 @@
 import streamlit as st
-import cv2
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageOps
 
 # Fungsi untuk menampilkan halaman pertama (Tentang Anggota Kelompok)
 def page_about():
@@ -56,29 +55,34 @@ def page_image_processing():
 
 # Fungsi untuk rotasi gambar
 def rotate_image(img, angle):
-    rows, cols = img.shape[:2]
-    M = cv2.getRotationMatrix2D((cols/2, rows/2), angle, 1)
-    rotated = cv2.warpAffine(img, M, (cols, rows))
-    return rotated
+    pil_img = Image.fromarray(img)  # Convert numpy array to PIL Image
+    rotated = pil_img.rotate(angle)
+    return np.array(rotated)
 
 # Fungsi untuk skala gambar
 def scale_image(img, factor):
-    rows, cols = img.shape[:2]
-    new_dim = (int(cols * factor), int(rows * factor))
-    scaled = cv2.resize(img, new_dim)
-    return scaled
+    pil_img = Image.fromarray(img)  # Convert numpy array to PIL Image
+    width, height = pil_img.size
+    new_dim = (int(width * factor), int(height * factor))
+    scaled = pil_img.resize(new_dim)
+    return np.array(scaled)
 
 # Fungsi untuk mentranslasikan gambar
 def translate_image(img, x, y):
-    M = np.float32([[1, 0, x], [0, 1, y]])
-    translated = cv2.warpAffine(img, M, (img.shape[1], img.shape[0]))
-    return translated
+    pil_img = Image.fromarray(img)  # Convert numpy array to PIL Image
+    translated = ImageOps.offset(pil_img, x, y)
+    return np.array(translated)
 
 # Fungsi untuk skew gambar
 def skew_image(img, skew_x, skew_y):
-    M = np.float32([[1, skew_x/100, 0], [skew_y/100, 1, 0]])
-    skewed = cv2.warpAffine(img, M, (img.shape[1], img.shape[0]))
-    return skewed
+    pil_img = Image.fromarray(img)  # Convert numpy array to PIL Image
+    width, height = pil_img.size
+    skewed = pil_img.transform(
+        (width, height), 
+        Image.AFFINE, 
+        (1, skew_x / 100.0, 0, skew_y / 100.0, 1, 0)
+    )
+    return np.array(skewed)
 
 # Menentukan halaman mana yang akan ditampilkan
 def main():
