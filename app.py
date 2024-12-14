@@ -24,7 +24,7 @@ def page_image_processing():
         img = np.array(img)  # Convert to numpy array untuk diproses lebih lanjut
 
         # Menampilkan gambar asli
-        st.image(img, caption="Gambar Asli", use_column_width=True)
+        st.image(img, caption="Gambar Asli", use_container_width=True)
 
         st.subheader("Pilih Operasi Image Processing")
 
@@ -34,24 +34,24 @@ def page_image_processing():
         if operation == "Rotate":
             angle = st.slider("Pilih sudut rotasi:", min_value=0, max_value=360, value=90)
             rotated_image = rotate_image(img, angle)
-            st.image(rotated_image, caption=f"Rotasi {angle} Derajat", use_column_width=True)
+            st.image(rotated_image, caption=f"Rotasi {angle} Derajat", use_container_width=True)
         
         elif operation == "Scale":
             scale_factor = st.slider("Pilih faktor skala:", min_value=0.1, max_value=3.0, value=1.0)
             scaled_image = scale_image(img, scale_factor)
-            st.image(scaled_image, caption=f"Skala {scale_factor}x", use_column_width=True)
+            st.image(scaled_image, caption=f"Skala {scale_factor}x", use_container_width=True)
         
         elif operation == "Translate":
             x_translation = st.slider("Pilih pergeseran horizontal:", min_value=-100, max_value=100, value=0)
             y_translation = st.slider("Pilih pergeseran vertikal:", min_value=-100, max_value=100, value=0)
             translated_image = translate_image(img, x_translation, y_translation)
-            st.image(translated_image, caption="Pergeseran Gambar", use_column_width=True)
+            st.image(translated_image, caption="Pergeseran Gambar", use_container_width=True)
         
         elif operation == "Skew":
             skew_x = st.slider("Pilih skew horizontal:", min_value=-50, max_value=50, value=0)
             skew_y = st.slider("Pilih skew vertikal:", min_value=-50, max_value=50, value=0)
             skewed_image = skew_image(img, skew_x, skew_y)
-            st.image(skewed_image, caption="Skew Gambar", use_column_width=True)
+            st.image(skewed_image, caption="Skew Gambar", use_container_width=True)
 
 # Fungsi untuk rotasi gambar
 def rotate_image(img, angle):
